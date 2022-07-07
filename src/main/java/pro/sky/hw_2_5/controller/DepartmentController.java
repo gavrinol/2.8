@@ -35,7 +35,7 @@ public class DepartmentController {
         return departmentService.findEmployeeByDepartment(department);
     }
 
-    @GetMapping("/max-salary")
+    @GetMapping("/all")
     public Map<Integer, List<Employee>> findEmployee(@RequestParam("departmentId") int department){
         return departmentService.findEmployee(department);
     }
