@@ -1,8 +1,12 @@
 package pro.sky.hw_2_5.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Locale;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 public class Employee {
 
@@ -16,8 +20,8 @@ public class Employee {
                     String lastName,
                     int department,
                     double salary){
-        this.name = name;
-        this.lastName = lastName;
+        this.name = capitalize(name.toLowerCase());
+        this.lastName = capitalize(lastName.toLowerCase());
         this.department = department;
         this.salary = salary;
     }
