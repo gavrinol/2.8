@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class DepartmentService {
+
     private final EmployeeService employeeService;
 
     public DepartmentService(EmployeeService employeeService) {
@@ -18,27 +19,27 @@ public class DepartmentService {
     }
 
 
-    public Employee findEmployeeWithMaxSalary(int department){
+    public Employee employeeWithMaxSalary(int department){
         return employeeService.getAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .max(Comparator.comparingDouble(Employee::getSalary))
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
-    public Employee findEmployeeWithMinSalary(int department){
+    public Employee employeeWithMinSalary(int department){
         return employeeService.getAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .min(Comparator.comparingDouble(Employee::getSalary))
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
-    public List<Employee> findEmployeeByDepartment(int department){
+    public List<Employee> employeesFromDepartment(int department){
         return employeeService.getAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .collect(Collectors.toList());
     }
 
-    public Map<Integer, List<Employee>> findEmployee(int department){
+    public Map<Integer, List<Employee>> employeesGroupedByDepartment(){
         return employeeService.getAll().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
     }

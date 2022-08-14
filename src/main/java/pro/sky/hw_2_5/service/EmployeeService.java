@@ -8,64 +8,60 @@ import pro.sky.hw_2_5.exceptions.EmployeeStorageIsFullException;
 import pro.sky.hw_2_5.exceptions.InvalidInputException;
 import pro.sky.hw_2_5.model.Employee;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {
 
-    private static final int limit = 10;
-    private final Map<String, Employee> employees = new HashMap<>();
+    private static final int LIMIT = 10;
 
-    private String getKey(String name, String surname){
-        return name + " " + surname;
+    private final List<Employee> employees = new ArrayList<>();
+
+    private final ValidatorService validatorService;
+
+    public  EmployeeService (ValidatorService validatorService) {
+        this.validatorService = validatorService;
     }
 
     public Employee add(String name,
                         String surname,
                         int department,
                         double salary) {
-        if (!validateInput(name, surname)){
-            throw new InvalidInputException();
+        Employee employee = new Employee(
+                validatorService.validateName(name),
+                validatorService.validateSurname(surname),
+                department,
+                salary
+        );
+        if (employees.contains(employee)){
+            throw new EmployeeAlreadyAddedException();
         }
-        Employee employee = new Employee(name, surname, department, salary);
-        if (employees.containsKey(getKey(name, surname))) {
-            throw new EmployeeAlreadyAddedException(); 
-        }
-        if (employees.size() < limit) {
-            employees.put(getKey(name, surname), employee);
+        if (employees.size() < LIMIT) {
+            employees.add(employee);
             return employee;
         }
-        throw new InvalidInputException();
+        throw new EmployeeStorageIsFullException();
     }
 
     public Employee remove(String name, String surname) {
-        if (!validateInput(name, surname)){
-            throw new InvalidInputException();
-        }
-        String key = getKey(name, surname);
-        if (!employees.containsKey(key)){
-            throw new EmployeeNotFoundException();
-        }
-        return employees.remove(key);
+        Employee employee = employees.stream()
+                .filter(emp -> emp.getName().equals(name) && emp.getLastName().equals(surname))
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
+        employees.remove(employee);
+        return  employee;
     }
 
     public Employee find(String name, String surname) {
-        if (!validateInput(name, surname)){
-            throw new IllegalArgumentException();
-        }
-        String key = getKey(name, surname);
-        if (!employees.containsKey(getKey(name, surname))){
-            throw new EmployeeNotFoundException();
-        }
-        return employees.get(key);
+        return employees.stream()
+                .filter(emp -> emp.getName().equals(name) && emp.getLastName().equals(surname))
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
     }
 
     public List<Employee> getAll(){
-        return new ArrayList<>(employees.values());
-    }
-
-    private boolean validateInput(String name, String surname){
-        return !StringUtils.isAlpha(name) || !StringUtils.isAlpha(surname);
+        return new ArrayList<>(employees);
     }
 
 }
