@@ -36,10 +36,11 @@ public class EmployeeServiceTest {
     @Test
     public void addNegativeTest2(){
         assertThatExceptionOfType(IncorrectNameException.class)
-                .isThrownBy(()->employeeService.add("Олеu", "Gavrin", 1, 100000));
+                .isThrownBy(()->employeeService.add("!Alexey", "Gavrilov", 1, 100000));
 
         assertThatExceptionOfType(IncorrectSurnameException.class)
-                .isThrownBy(()->employeeService.add("Олег", "Гаврин!", 1, 100000));
+                .isThrownBy(()->employeeService.add("Alexey", "Gavrilov!", 1, 100000));
+
     }
 
     @ParameterizedTest

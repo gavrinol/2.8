@@ -33,11 +33,11 @@ public class DepartmentServiceTest {
     @BeforeEach
     public void beforeEach() {
         List<Employee> employees = List.of(
-                new Employee("Василий", "Васильев",  1, 20000),
-                new Employee("Иван", "Иванов", 2, 40000),
-                new Employee("Семен", "Семенов", 1, 50000),
-                new Employee("Андрей", "Андреев",  1, 60000),
-                new Employee("Николай", "Николаев", 2, 80000)
+                new Employee("Vyacheslav", "Vasiliev", 1, 80000),
+                new Employee("Sergey", "Kruglov",  2, 100000),
+                new Employee("Nikita", "Kvadratov", 1, 90000),
+                new Employee("Leonid", "Utesov",  2, 120000),
+                new Employee("Nickolai", "Nikolaev", 2, 80000)
         );
         when(employeeService.getAll()).thenReturn(employees);
     };
@@ -69,15 +69,15 @@ public class DepartmentServiceTest {
 
     public static Stream<Arguments> employeeWithMaxSalaryParams() {
         return Stream.of(
-                Arguments.of(1, new Employee("Vyacheslav", "Vasiliev", 1, 80000)),
-                Arguments.of(2, new Employee("Sergey", "Kruglov",  2, 100000))
+                Arguments.of(1, new Employee("Nikita", "Kvadratov", 1, 90000)),
+                Arguments.of(2, new Employee("Leonid", "Utesov",  2, 120000))
         );
     }
 
     public static Stream<Arguments> employeeWithMinSalaryParams(){
         return Stream.of(
-                Arguments.of(1, new Employee("Nikita", "Kvadratov", 1, 90000)),
-                Arguments.of(2, new Employee("Leonid", "Utesov",  2, 120000))
+                Arguments.of(1, new Employee("Vyacheslav", "Vasiliev", 1, 80000)),
+                Arguments.of(2, new Employee("Nickolai", "Nikolaev", 2, 80000))
         );
     }
 }
